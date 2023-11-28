@@ -1,0 +1,134 @@
+package trees;
+
+import java.util.Arrays;
+
+public class TreeTraversal {
+
+public static void main(String[] args) {
+        //char[] arr = {'D', 'A', 'B', 'C'};
+        //System.out.println(new String(arr).indexOf('B'));        
+        
+        Tree tree = new Tree(10);
+        tree.randomGenerate(10);
+        /*
+        tree.addRoot('A');
+        tree.addLeftChild('B', 0);
+        tree.addRightChild('C', 0);
+        tree.addLeftChild('D', 1);
+        tree.addRightChild('E', 1);
+*/
+        tree.print();
+        System.out.println(tree.getLeftChild('A'));
+        //tree.preOrder('A');
+    }
+}
+
+// Helper class
+class Tree {
+    // Member variables of this class
+    private int root = 0;
+    private char[] arr;
+    private int count = 0;
+
+    public Tree(int count){
+        this.count = count;
+        arr = new char[count];
+    }
+    // Creating root node
+    public void addRoot(char key) {
+        arr[0] = key;
+    }
+
+    // Creating left child of root
+    public void addLeftChild(char key, int root) {
+        int left = (root * 2) + 1;
+        if (left>=count) return;
+        if (arr[root] == 0)
+            System.out.printf(
+                    "Can't set child at %d, no parent found\n", left);
+        else
+            arr[left] = key;
+    }
+
+    // Creating right child of root
+    public void addRightChild(char key, int root) {
+        int right = (root * 2) + 2;
+        if (right>=count) return;
+        if (arr[root] == 0)
+            System.out.printf(
+                    "Can't set child at %d, no parent found\n", right);
+        else
+            arr[right] = key;
+    }
+
+    // To print tree
+    public void print() {
+        // Iterating using for loop
+        for (int i = 0; i < 10; i++)
+            if (arr[i] != 0)
+                System.out.print(arr[i]);
+            else
+                System.out.print("-");
+        System.out.println();
+    }
+
+    public int findNode(char key){
+        if (key==0) return -1;
+        return new String(arr).indexOf(key);
+    //Arrays.binarySearch(arr,key); //Не работает
+    }
+
+    public char getLeftChild(char key){
+        int node = findNode(key);
+        System.out.println(key+" "+node);
+        if (key==-1) return 0;
+        if (node*2+1<arr.length)
+        return arr[node*2+1];
+        else return 0;
+    }
+
+    public char getRightChild(char key){
+        int node = findNode(key);
+        if (key==-1) return 0;
+        if (node*2+2<arr.length)
+            return arr[node*2+2];
+        else return 0;
+    }
+
+    //Preorder traversal
+    public void preOrder(char key){
+     if (key==0) return;
+        System.out.print(key+" ");
+        preOrder(getLeftChild(key));
+        preOrder(getRightChild(key));
+    }
+    
+    public boolean hasLeftChild(Tree tree ){
+        return true;
+    }
+    //Generate the binary tree with count nodes
+    public void randomGenerate(int count){
+        char cRoot = 'A';       
+        addRoot(cRoot);
+        print();
+        int i=1;
+        while (i<count){
+            int type = (int) Math.round(Math.random());  //Левый или правый child          
+            int parent = (int)Math.round(Math.random()*i); //Кто его parent
+            //System.out.println(type+" "+parent+" "+arr[parent]+" "+findNode(arr[parent]));
+            
+            if (findNode(arr[parent])!=-1){ //Если parent найден и можно добавить в массив
+            if (type==0 && getLeftChild(arr[parent])==0 && (parent * 2) + 1<count){ 
+                addLeftChild((char)((int)cRoot+i), parent);
+                i++;
+            }
+            else if (type==1 && getRightChild(arr[parent])==0 && (parent * 2) + 2<count){ 
+                addRightChild((char)((int)cRoot+i), parent);
+                i++;
+            }
+            //print();
+        }         
+    }    
+    }  
+}
+
