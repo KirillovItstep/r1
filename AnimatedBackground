@@ -1,0 +1,87 @@
+package graphicsdemo;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class AnimatedBackground extends JFrame {
+
+    private JPanel panel;
+    Random random = new Random();
+    ArrayList<Point> dots = new ArrayList<>();
+
+    public AnimatedBackground() {
+        panel = new JPanel() {
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+
+                //g.setColor(colors[colorIndex]);
+                //g.fillRect(0, 0, getWidth(), getHeight());
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setBackground(Color.BLACK);
+                g2d.clearRect(0, 0, getParent().getWidth(), getParent().getHeight());
+
+                for (int i = 0; i < dots.size(); i++) {
+                    g2d.setColor(((Point) dots.get(i)).color);
+                    g2d.drawLine(dots.get(i).x, dots.get(i).y, dots.get(i).x, dots.get(i).y);
+                }
+
+            }
+        };
+
+        Timer timer = new Timer(1, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int red = random.nextInt(256);
+                int green = random.nextInt(256);
+                int blue = random.nextInt(256);
+
+                int rndX = random.nextInt(getSize().width);
+                int rndY = random.nextInt(getSize().height);
+                dots.add(new Point(rndX, rndY, new Color(red, green, blue)));
+                panel.repaint();
+            }
+        });
+
+        timer.start();
+        add(panel);
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new AnimatedBackground();
+            }
+        });
+    }
+
+    public static void pause(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    class Point {
+
+        public int x;
+        public int y;
+        public Color color;
+
+        private Point(int x, int y, Color color) {
+           this.x = x;
+           this.y = y;
+           this.color = color;
+        }
+    }
+}
