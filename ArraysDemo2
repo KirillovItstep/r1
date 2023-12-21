@@ -1,0 +1,38 @@
+package basics;
+
+import java.util.Arrays;
+
+public class ArraysTasks2 {
+    /*
+         Для заданного массива целых чисел найти суммы пар соседних элементов и поместить их в другой массив.
+         Для целочисленного массива переместить все нечетные элементы в начало массива.
+         Заполнить массив последовательностью 1,
+         */
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(combinePairs(new int[]{1,1,2,2,3,3})));
+        System.out.println(Arrays.toString(moveOdd(new int[]{2,1,2,2,3,3})));
+    }
+    
+    static int[] combinePairs(int[] arr){
+        int count = arr.length/2;
+        int[] result = new int[count];
+        for (int i=0; i<count; i++)
+            result[i] = arr[i*2]+arr[i*2+1];
+        return result;
+    }
+    
+    static int[] moveOdd(int[] arr){
+        int index = 0;
+        for (int i=0; i<arr.length; i++)
+            if (arr[i]%2==1)
+                swap(arr,i,index++);
+            return Arrays.copyOf(arr, arr.length);
+    }
+    
+    //Попробовать swap над числами (элементами массива)
+    static void swap(int[] arr, int i, int j){
+        int temp = arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
+    }
+}
