@@ -1,0 +1,42 @@
+
+package arrays;
+
+import static arrays.ArraysTasks2.combinePairs;
+import java.util.Arrays;
+
+//В массиве найти положительную последовательность максимальной длины.
+public class Arrays1 {
+     public static void main(String[] args) {
+        int[] arr = {-1,2,-2,-3,1,2,-5,1,3,5};
+        //int[] arr = {-5,1,2,3};       
+        
+        int index = -1;
+        int count = 0; 
+        int max = 0;
+        for (int i=0; i<arr.length; i++){
+            if (arr[i]>0){ 
+               while (i<arr.length-1 && arr[i]>0){                    
+                    count++; i++;
+                }                 
+                if (i==arr.length-1) {
+                    count++; i++;
+                }                
+                if (max<count) {
+                    max = count;
+                    index = i;
+                }
+               // System.out.println(count); 
+                count = 0;
+                }  
+        }
+        
+        System.out.println(max); 
+        System.out.println(index); 
+        
+        int [] res = new int[max];
+        for (int i=0; i<max; i++) 
+            res[i] = arr[index-max+i];
+        
+        System.out.println(Arrays.toString(res));
+    }
+}
